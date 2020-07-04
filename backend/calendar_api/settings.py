@@ -14,6 +14,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'corsheaders',
+    'djcelery',
 
     #local
     'event_api',
@@ -82,3 +83,17 @@ USE_TZ = True
 
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+BROKER_URL = 'redis://localhost:6379/0'
+
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+CELERY_TASK_RESULT_EXPIRES = 7*86400  # 7 days
+
+CELERY_SEND_EVENTS = True
+# место хранения периодических задач (данные для планировщика)
+CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
+
+
+import djcelery
+djcelery.setup_loader()

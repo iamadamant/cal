@@ -1,33 +1,43 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>Calendar API</title>
-	<meta charset="utf-8">
-	<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="style.css">
+    <title>Event sheduler</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
-	<script type="text/javascript" src="jquery.js"></script>
-	<script type="text/javascript" src="bootstrap.min.js"></script>
-	<div id="app">
-		<register ref="register"></register>
-		<login ref="login"></login>
-		<div class="container">
-			<parameters ref="parameters"></parameters>
-			<div class="row mt-3">
-				<div class="col-lg-4">
-					<anonymous ref="anonymous"></anonymous>
-					<empty v-show="empty"></empty>
-					<event v-for="event in events" v-bind:event="event"></event>
-				</div>
-				<div class="col-lg-8 card border-dark" style="height: 750px">
-					<eventform ref="event"></eventform>
-				</div>
-			</div>
-		</div>
-	</div>
-	<script src="vue.js"></script>
-	<script src="script.js"></script>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="bootstrap.min.js"></script>
+    <div id="app">
+        <register></register>
+        <div class="container">
+            <createform></createform>
+            <changeform v-bind:target="target"></changeform>
+            <div class="row mt-5 mb-4">
+                <div class="col-lg-4">
+                    <img src="calendar.png" alt="calendar.png" style="width: 100px; float: right;">
+                </div>
+                <div class="col-lg-6">
+                    <h1 class="mt-4 mb-5">Event Sheduller</h1>
+                </div>
+            </div>
+            <search ref="createform"></search>
+            <div class="mt-5" v-if="!is_auth">
+                <div class="text-center"><img src="quetion.png" alt=""></div>
+                <h2 class="text-center mt-2">Нужно <a href="#" onclick="$('#registerWindow').modal('show');">авторизоваться</a></h2>
+
+            </div>
+
+            <div class="row">
+                <event v-for="event in events" v-bind:event="event"></event>
+            </div>
+        </div>
+    </div>
+    <script src="vue.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>

@@ -5,12 +5,9 @@ from rest_framework.response import Response
 from .models import *
 from .serializers import *
 import datetime
-from .tasks import mail_handler
 import json
 from django.contrib.auth import authenticate
 
-
-#mail_handler()
 
 
 class RegisterSet(viewsets.ViewSet):
@@ -23,7 +20,7 @@ class RegisterSet(viewsets.ViewSet):
             user = serializer.save()
             return Response({'user': user.id})
         else:
-            return Response(serializer.errors, status=403)
+            return Response(serializer.errors, status=200)
 
 
 class AuthorizeSet(viewsets.ViewSet):
@@ -36,13 +33,16 @@ class AuthorizeSet(viewsets.ViewSet):
         # Временная затычка. Функция authenticate не работает. Выяснить почему!
         user = None
         try:
-            user = User.objects.filter(username=username, password=password)[0]
+            user = User.objects.filter(username=username)[0]
         except IndexError:
             pass
         if user is not None:
-            return Response({'user': user.id})
+            if user.check_password(password):
+                return Response({'user': user.id})
+            else:
+                return Response({'error': 'password'}, status=200)
         else:
-            return Response({'error': 'Login or password is not correct!'}, status=403)
+            return Response({'error': 'login'}, status=200)
 
 
 class EventSet(viewsets.ViewSet):
